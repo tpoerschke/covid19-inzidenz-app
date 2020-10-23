@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationResult;
 
 import timpo.incidence.utility.LocationUtility;
 import timpo.incidence.utility.SimpleLocationCallback;
+import timpo.incidence.utility.api.IncidenceApi;
 
 public class MainFragment extends Fragment {
 
@@ -32,7 +33,12 @@ public class MainFragment extends Fragment {
 
         final TextView textview_first = view.findViewById(R.id.textview_first);
         LocationUtility.requestLocation(getContext(), locationResult -> {
-            textview_first.setText("Location Time: " + locationResult.getLastLocation().getTime());
+            new IncidenceApi(getContext()).getIncidenceData(locationResult.getLastLocation(), incidenceResultContainer -> {
+                double incidence = Double.parseDouble(incidenceResultContainer.features.get(0).get("attributes").get("cases7_per_100k"));
+                incidence = Math.round(incidence * 100) / 100.0;
+                MainActivity.incidence = incidence;
+                textview_first.setText(String.valueOf(incidence));
+            });
         });
     }
 }
