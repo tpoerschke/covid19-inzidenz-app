@@ -1,4 +1,4 @@
-package timpo.inzidenz;
+package timpo.incidence;
 
 import org.junit.Test;
 

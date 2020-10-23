@@ -1,13 +1,20 @@
-package timpo.inzidenz;
+package timpo.incidence;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+
+import timpo.incidence.utility.LocationUtility;
+import timpo.incidence.utility.SimpleLocationCallback;
 
 public class MainFragment extends Fragment {
 
@@ -22,5 +29,10 @@ public class MainFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final TextView textview_first = view.findViewById(R.id.textview_first);
+        LocationUtility.requestLocation(getContext(), locationResult -> {
+            textview_first.setText("Location Time: " + locationResult.getLastLocation().getTime());
+        });
     }
 }
