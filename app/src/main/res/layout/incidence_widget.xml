@@ -61,7 +61,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
-        android:text="Fälle letzte 7 Tage/100.000 EW"
+        android:text="@string/incidence_description"
         android:textAlignment="center"
         android:textColor="#fff" />
 

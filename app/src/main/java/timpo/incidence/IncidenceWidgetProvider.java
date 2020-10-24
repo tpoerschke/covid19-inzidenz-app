@@ -48,7 +48,7 @@ public class IncidenceWidgetProvider extends AppWidgetProvider {
                     double incidence = Double.parseDouble(incidenceResultContainer.features.get(0).get("attributes").get("cases7_per_100k"));
                     incidence = Math.round(incidence * 100) / 100.0;
                     views.setTextViewText(R.id.incidenceTextView, String.valueOf(incidence).replace('.', ','));
-                    views.setTextViewText(R.id.locationTextView,incidenceResultContainer.features.get(0).get("attributes").get("GEN"));
+                    views.setTextViewText(R.id.locationTextView, incidenceResultContainer.features.get(0).get("attributes").get("GEN"));
                     Log.d(TAG, "Inzidenz: " + incidence);
                 }
                 catch (NullPointerException npe) {
