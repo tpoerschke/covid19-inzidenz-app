@@ -2,6 +2,7 @@ package timpo.incidence;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,11 @@ public class MainFragment extends Fragment {
 
         final TextView textview_first = view.findViewById(R.id.textview_first);
         LocationUtility.requestLocation(getContext(), locationResult -> {
+            Log.d("FRAG", "locationResult");
             new IncidenceApi(getContext()).getIncidenceData(locationResult.getLastLocation(), incidenceResultContainer -> {
+                if(incidenceResultContainer.features.size() < 1) {
+                    return;
+                }
                 double incidence = Double.parseDouble(incidenceResultContainer.features.get(0).get("attributes").get("cases7_per_100k"));
                 incidence = Math.round(incidence * 100) / 100.0;
                 MainActivity.incidence = incidence;

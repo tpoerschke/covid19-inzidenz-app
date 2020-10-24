@@ -8,18 +8,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.concurrent.TimeUnit;
-
-import timpo.incidence.background.LocationWorker;
-import timpo.incidence.utility.LocationUtility;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,15 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         requestPermissions();
-
-        // WorkManager für BackgroundLocations
-        PeriodicWorkRequest workReq = new PeriodicWorkRequest.Builder(LocationWorker.class, 15, TimeUnit.MINUTES)
-                .addTag("LocWorker")
-                .build();
-        WorkManager.getInstance(getApplicationContext())
-                .enqueueUniquePeriodicWork("LocWorker", ExistingPeriodicWorkPolicy.REPLACE, workReq);
-
-        LocationUtility.requestLocation(getApplicationContext());
     }
 
     private void requestPermissions() {
@@ -54,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_COARSE_LOCATION }, 1);
+                ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_BACKGROUND_LOCATION }, 1);
+            }
+        }
+
+        // ForegroundService
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.FOREGROUND_SERVICE}, 1);
             }
         }
     }
